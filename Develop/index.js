@@ -3,10 +3,16 @@
 const fs=require("fs")
 const generateMarkdown=require("./utils/generateMarkdown")
 const inquirer=require("inquirer")
+
+fs.writeFile(path.join(__dirname, 'dist', 'README.md'), markdownContent, (err) =>
+  err ? console.error(err) : console.log('README.md generated successfully!')
+);
+
 // TODO: Create an array of questions for user input
 const questions = [
     {
         type:"input",
+        name:"project name",
         message:"What is the title of your project",
         choices: "title"
 
