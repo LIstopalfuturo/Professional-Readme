@@ -1,85 +1,98 @@
-
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
 function renderLicenseBadge(license) {
-  if(license==="MIT"){
-    return`[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)`
-  }
-  else if(license==="Apache"){
-    return`[![License: Apache](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)`
-  }
-  else if(license==="GPL"){
-    return`[!License:GPL](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)`
-  }
-  else if(license==="BSD 3-Clause"){
-    return`{![License:BSD 3-Clauce](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)`
-  }
+  if (!license || license === 'None') return '';
+  
+  const badges = {
+    'MIT': '[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)',
+    'Apache': '[![License: Apache](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)',
+    'GPL': '[![License: GPL](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)',
+    'BSD 3-Clause': '[![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)'
+  };
+  
+  return badges[license] || '';
 }
 
 // TODO: Create a function that returns the license link
 // If there is no license, return an empty string
-function renderLicenseLink(license) {}
+function renderLicenseLink(license) {
+  if (!license || license === 'None') return '';
+  
+  const licenseLinks = {
+    'MIT': 'https://opensource.org/licenses/MIT',
+    'Apache': 'https://opensource.org/licenses/Apache-2.0',
+    'GPL': 'https://www.gnu.org/licenses/gpl-3.0',
+    'BSD 3-Clause': 'https://opensource.org/licenses/BSD-3-Clause'
+  };
+  
+  return licenseLinks[license] || '';
+}
 
 // TODO: Create a function that returns the license section of README
 // If there is no license, return an empty string
-function renderLicenseSection(license) {}
+function renderLicenseSection(license) {
+  if (!license || license === 'None') return '';
+  
+  const licenseTexts = {
+    'MIT': 'This project is licensed under the MIT License - see the provided link for details.',
+    'Apache': 'This project is licensed under the Apache License 2.0 - see the provided link for details.',
+    'GPL': 'This project is licensed under the GNU General Public License v3.0 - see the provided link for details.',
+    'BSD 3-Clause': 'This project is licensed under the BSD 3-Clause License - see the provided link for details.'
+  };
+
+  return `## License
+${licenseTexts[license] || 'This project is licensed under the selected license.'}
+
+For more information, please visit: [${license} License](${renderLicenseLink(license)})`;
+}
 
 // TODO: Create a function to generate markdown for README
 function generateMarkdown(data) {
-  return `# ${data.title}
+  // Ensure all data fields exist with defaults
+  const {
+    title = '',
+    description = '',
+    installation = '',
+    usage = '',
+    contributing = '',
+    tests = '',
+    license = '',
+    email = ''
+  } = data;
 
-${renderLicenseBadge(data.license)}
+  const licenseBadge = renderLicenseBadge(license);
+  const licenseSection = renderLicenseSection(license);
 
+  return `# ${title}
+
+${licenseBadge}
 
 ## Description
+${description}
 
-${data.description}
-
-## Table of Contents (Optional)
-
-
+## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-- [Credits](#credits)
-- [License](#license)
+${license && license !== 'None' ? '- [License](#license)\n' : ''}- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
 
 ## Installation
-
-${data.installation}
+${installation}
 
 ## Usage
+${usage}
 
-${data.usage}
+${licenseSection}
 
-## Credits
+## Contributing
+${contributing}
 
-${data.credits}
-
-## License
-
-${data.license}
----
-
-🏆 The previous sections are the bare minimum, and your project will ultimately determine the content of this document. You might also want to consider adding the following sections.
-
-## Badges
-
-![badmath](https://img.shields.io/github/languages/top/lernantino/badmath)
-
-Badges aren't necessary, per se, but they demonstrate street cred. Badges let other developers know that you know what you're doing. Check out the badges hosted by [shields.io](https://shields.io/). You may not understand what they all represent now, but you will in time.
-
-## Features
-
-${data.features
-
-}
-## How to Contribute
-
-${data.contributing}
 ## Tests
+${tests}
 
-${data.tests}
-
+## Questions
+For any questions, please contact me at ${email}.
 `;
 }
 

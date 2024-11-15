@@ -4,18 +4,14 @@ const fs=require("fs")
 const generateMarkdown=require("./utils/generateMarkdown")
 const inquirer=require("inquirer")
 
-fs.writeFile(path.join(__dirname, 'dist', 'README.md'), markdownContent, (err) =>
-  err ? console.error(err) : console.log('README.md generated successfully!')
-);
 
 // TODO: Create an array of questions for user input
 const questions = [
     {
-        type:"input",
-        name:"project name",
-        message:"What is the title of your project",
-        choices: "title"
-
+        type: "input",
+        name: "title",
+        message: "What is the title of your project?",
+        validate: input => input.trim() !== '' ? true : 'Title is required'
     },
     {
         type: 'input',
@@ -44,14 +40,19 @@ const questions = [
       },
     
     {
-       type:"list",
-       message:"Choose the following license",
-       choices:["MIT","Apache"]
+       type: "list",
+       name: "license",
+       message: "Choose a license for your project:",
+       choices: ["MIT", "Apache", "GPL", "BSD 3-Clause", "None"]
      },
    {
       type: 'input',
       name: 'email',
       message: 'What is your email address?',
+      validate: input => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(input) ? true : 'Please enter a valid email address';
+      }
     },
 
 
@@ -60,8 +61,18 @@ const questions = [
 
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
-     const content=generateMarkdown(data)
-    fs.writeFile(fileName,content,(err)=>err?console.error(err):console.log("succes"))
+    const content = generateMarkdown(data)
+    const dir = './output';
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+    fs.writeFile(fileName, content, (err) => {
+        if (err) {
+            console.error('Error writing file:', err);
+            return;
+        }
+        console.log('README.md successfully generated!');
+    });
 }
 
 // TODO: Create a function to initialize app
