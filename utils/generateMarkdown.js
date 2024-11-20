@@ -57,7 +57,8 @@ function generateMarkdown(data) {
     contributing = '',
     tests = '',
     license = '',
-    email = ''
+    email = '',
+    github = ''
   } = data;
 
   const licenseBadge = renderLicenseBadge(license);
@@ -93,6 +94,7 @@ ${tests}
 
 ## Questions
 For any questions, please contact me at ${email}.
+You can also find me on GitHub: [${github}](https://github.com/${github})
 `;
 }
 
